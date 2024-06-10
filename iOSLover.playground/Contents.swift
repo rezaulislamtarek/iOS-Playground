@@ -1,38 +1,17 @@
 import UIKit
-
-
-class User{
-    let name = "Rezaul"
-}
-
-class Caller{
-   weak var user : User?
-    
-    func someFunc(){
-        user = User()
-        print(user?.name)
-    }
-}
-
-let c = Caller()
-c.someFunc()
-/// output : nil
-/// Instance will be immediately deallocated because property 'user' is 'weak'
-
 /*
-     class User{
-        let name = "Rezaul"
-     }
-     
-     class Caller{
-         var user : User?
-         
-         func someFunc(){
-             user = User()
-             print(user?.name)
-         }
-     }
-     
-     let c = Caller()
-     c.someFunc() // Optional("Rezaul")
+    write a generic function to add 2 numbers
  */
+
+func sum<T : Numeric>( a: T, b : T) -> T{
+    return a + b
+}
+
+
+/// conditional conformances way
+func sumAnotherWay<T>( a: T, b : T) -> T where T : Numeric{
+    return a + b
+}
+
+print(sum(a: 1, b: 2))
+print(sumAnotherWay(a: 1, b: 2))
