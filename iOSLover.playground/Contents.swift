@@ -1,17 +1,15 @@
 import UIKit
 /*
-    write a generic function to add 2 numbers
+ Capture list in closures
  */
 
-func sum<T : Numeric>( a: T, b : T) -> T{
-    return a + b
+
+var userName : String = "Rezaul"
+
+let code = { [userName] in
+    print(userName)
 }
 
+userName = "Tarek"
 
-/// conditional conformances way
-func sumAnotherWay<T>( a: T, b : T) -> T where T : Numeric{
-    return a + b
-}
-
-print(sum(a: 1, b: 2))
-print(sumAnotherWay(a: 1, b: 2))
+code()
