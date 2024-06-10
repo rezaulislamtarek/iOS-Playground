@@ -1,13 +1,38 @@
 import UIKit
 
-// What is the difference between a variable, optional and Implicitly unwrapped optioanl?
 
-///
-    var a : String
-    var b : String? // Optional
-    var c : String! // Implicitly unwrapped optional
-///
+class User{
+    let name = "Rezaul"
+}
 
-b = nil
+class Caller{
+   weak var user : User?
+    
+    func someFunc(){
+        user = User()
+        print(user?.name)
+    }
+}
 
-print("c's value is \(b)")
+let c = Caller()
+c.someFunc()
+/// output : nil
+/// Instance will be immediately deallocated because property 'user' is 'weak'
+
+/*
+     class User{
+        let name = "Rezaul"
+     }
+     
+     class Caller{
+         var user : User?
+         
+         func someFunc(){
+             user = User()
+             print(user?.name)
+         }
+     }
+     
+     let c = Caller()
+     c.someFunc() // Optional("Rezaul")
+ */
