@@ -1,6 +1,34 @@
 import Foundation
 import Combine
 
+struct Sequence<T> : Publisher{
+    typealias Failure = Never
+    typealias Output = T
+    
+    private let seq : [T]
+    
+    init(_ seq : [T]){
+        self.seq = seq
+    }
+    
+    func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, T == S.Input {
+        self.seq.forEach { item in
+            sleep(1)
+            let _ = subscriber.receive(item)
+        }
+        subscriber.receive(completion: .finished)
+    }
+}
+
+let _ = Sequence([1,2,3,4,5,6]).sink { completion in
+    print(completion)
+} receiveValue: { value in
+    print(value)
+}
+
+/*
+ ------------ Just Publisher -------------
+ 
 struct Just<T> : Publisher{
     typealias Output = T
     typealias Failure = Never
@@ -20,9 +48,9 @@ let _ = Just("Rezaul").sink { completion in
 } receiveValue: { value in
     print(value)
 }
-
-
-/*
+ 
+ 
+ -------------- Empty Publisher ------------
 struct Empty : Publisher{
     typealias Output = Never
     
