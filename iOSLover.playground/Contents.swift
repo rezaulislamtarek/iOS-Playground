@@ -1,24 +1,22 @@
-import UIKit
+import Foundation
 
-
-class Person{
-    var name : String
-    
-    init(name: String) {
-        self.name = name
-        print("\(name) is initialized")
-    }
-    
-    deinit{
-        print("\(name) is deinitialized")
-    }
+let sq = DispatchQueue(label: "sq", attributes: .concurrent)
+ 
+print("1")
+sq.async {
+    print("2")
+    print(Thread.current)
+        sleep(4)
+    print("3")
 }
 
-var p1 : Person? = Person(name: "Rezaul") // Chank of memory allocate ARC = 1
-var p2 = p1   // ARC = 1 + 1 = 2
+print("4")
+print(Thread.current)
+sq.async {
+    print("5")
+    print(Thread.current)
+    print("6")
+}
+print("Sesh")
+// 1 2 3 4 5 6 Sesh  ->(sync)
 
-p1 = nil    // ARC = 2 - 1 = 1
-print(p1?.name) // nil
-print(p2?.name) // Rezaul
-p2 = nil        // ARC = 1 - 1 = 0 // Rezaul is deinitialized
-print(p2?.name) // nil
