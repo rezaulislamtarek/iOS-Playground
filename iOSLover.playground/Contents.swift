@@ -1,22 +1,21 @@
 import Foundation
+import Combine
 
-let sq = DispatchQueue(label: "sq", attributes: .concurrent)
- 
-print("1")
-sq.async {
-    print("2")
-    print(Thread.current)
-        sleep(4)
-    print("3")
+struct Empty : Publisher{
+    typealias Output = Never
+    
+    typealias Failure = Never
+    
+    func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
+        subscriber.receive(completion: .finished)
+    }
+     
+    
 }
 
-print("4")
-print(Thread.current)
-sq.async {
-    print("5")
-    print(Thread.current)
-    print("6")
+let _ = Empty().sink { completion in
+    print(completion)
+} receiveValue: { _ in
+    
 }
-print("Sesh")
-// 1 2 3 4 5 6 Sesh  ->(sync)
 
