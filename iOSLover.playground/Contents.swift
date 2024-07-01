@@ -1,26 +1,48 @@
 import Foundation
 
-struct Employee{
-    let name : String
-    let salary : Double
+func caloriesBurntByWalking(distance : Double) -> Double {
+    return distance * 1.5
+}
+func caloriesBurntByJogging(distance : Double) -> Double {
+    return distance * 2.5
+}
+func caloriesBurntBySkipping(distance : Double) -> Double {
+    return distance * 3.5
 }
 
-
-let employess = [
-    Employee(name: "Kamal", salary: 55555),
-    Employee(name: "Jamal", salary: 45555),
-    Employee(name: "Akash", salary: 100000),
-    Employee(name: "Rakib", salary: 155555),
-]
-
-func filterEmployees(filter : (Employee)-> Bool ) ->[Employee]{
-    employess.filter(filter)
+//closure
+let burntByFasting : (Double) -> Double = { hour in
+    return hour * 2
 }
 
-func filterBySalary(employee : Employee) -> Bool{
-    return employee.salary >= 100000
+// High Order function
+func caloriesBurntByActivity( activity : (Double) -> Double, unit : Double) -> Double {
+    return activity(unit)
 }
 
-let emps = filterEmployees(filter: filterBySalary)
+let res = caloriesBurntByActivity(activity: caloriesBurntBySkipping , unit: 2)
+print(res)
 
-print(emps)
+
+let resFasting = caloriesBurntByActivity(activity: burntByFasting , unit: 14)
+print(resFasting)
+
+
+//closure
+var getDifFrom1970 : (Date) -> String  = { date in
+    return date.timeIntervalSince1970.description
+}
+
+print(getDifFrom1970(Date()))
+
+
+// High Order function
+func userStage(stage : Int) -> (Double)->Double {
+    if stage == 1 {
+        return burntByFasting
+    }
+    return caloriesBurntByJogging
+}
+
+ let function = userStage(stage: 2)
+print(function(5))
