@@ -1,71 +1,26 @@
 import Foundation
-import Combine
 
-struct Sequence<T> : Publisher{
-    typealias Failure = Never
-    typealias Output = T
-    
-    private let seq : [T]
-    
-    init(_ seq : [T]){
-        self.seq = seq
-    }
-    
-    func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, T == S.Input {
-        self.seq.forEach { item in
-            sleep(1)
-            let _ = subscriber.receive(item)
-        }
-        subscriber.receive(completion: .finished)
-    }
+struct Employee{
+    let name : String
+    let salary : Double
 }
 
-let _ = Sequence([1,2,3,4,5,6]).sink { completion in
-    print(completion)
-} receiveValue: { value in
-    print(value)
+
+let employess = [
+    Employee(name: "Kamal", salary: 55555),
+    Employee(name: "Jamal", salary: 45555),
+    Employee(name: "Akash", salary: 100000),
+    Employee(name: "Rakib", salary: 155555),
+]
+
+func filterEmployees(filter : (Employee)-> Bool ) ->[Employee]{
+    employess.filter(filter)
 }
 
-/*
- ------------ Just Publisher -------------
- 
-struct Just<T> : Publisher{
-    typealias Output = T
-    typealias Failure = Never
-    
-    private let value : T
-    init(_ value  : T){
-        self.value = value
-    }
-    func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, T == S.Input {
-        let _ = subscriber.receive(self.value)
-        subscriber.receive(completion: .finished)
-    }
+func filterBySalary(employee : Employee) -> Bool{
+    return employee.salary >= 100000
 }
 
-let _ = Just("Rezaul").sink { completion in
-    print(completion)
-} receiveValue: { value in
-    print(value)
-}
- 
- 
- -------------- Empty Publisher ------------
-struct Empty : Publisher{
-    typealias Output = Never
-    
-    typealias Failure = Never
-    
-    func receive<S>(subscriber: S) where S : Subscriber, Failure == S.Failure, Output == S.Input {
-        subscriber.receive(completion: .finished)
-    }
-     
-    
-}
+let emps = filterEmployees(filter: filterBySalary)
 
-let _ = Empty().sink { completion in
-    print(completion)
-} receiveValue: { _ in
-    
-}
-*/
+print(emps)
