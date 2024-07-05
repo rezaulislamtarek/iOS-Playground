@@ -1,44 +1,68 @@
 import Foundation
 
-class Smaple{
-    var initialValue : Int
-    init(initialValue: Int) {
-        self.initialValue = initialValue
+struct User {
+    var name : String
+    var age : Int
+    var userSalery : Double = 123.45
+    
+    mutating func updateSalery(_ s: Double){
+        self.userSalery = s
     }
     
-    func update(value : Int){
-        self.initialValue = value
-    }
-    
-    //Computed property
-    var someComputedProperty: String {
-        if self.initialValue > 10 {
-            //print("GREATER THAN 10")
-            return "GREATER THAN 10"
-        } else {
-           // print("A SINGLE DIGIT NUMBER")
-            return "A SINGLE DIGIT NUMBER"
-        }
-    }
-    
-    //Lazy prperty
-    lazy var someLazyProperty : String = "Initial value is \(initialValue)"
+    lazy var salery : Double = {
+        print("Lazy calling...")
+        return userSalery
+    }()
     
 }
 
+var user = User(name: "Tarek", age: 29)
+print(user.salery) // Output: Lazy calling... and 123.45
+user.updateSalery(456.45)
+print(user.salery)  // output: 456.45
+print(user.name)
+
+
+
 /*
-    Lazy prperty captured 1st times accessed values.
-    As a result it shows initial value is 5 when it call second time.
+class ComplexCalculation{
+    var n : Int
+    init(n: Int){
+        self.n = n
+    }
+    
+    lazy var result : Int = {
+        var res = 0
+        for i in 1...1000000{
+            res += i
+        }
+        print("Lazy Call")
+        return res
+    }()
+    
+     var cResult : Int  {
+        var res = 0
+        for i in 1...1000000{
+            res += i
+        }
+        print("Computed Call")
+         
+        return res
+    }
+    
+}
+
+let comCal = ComplexCalculation(n: 5)
+print(comCal.cResult)
+print(comCal.cResult)
+
+print(comCal.result)
+print(comCal.result)
+ 
+/*
+  
+ computed and lazy
+  
  */
 
-
-let sample = Smaple(initialValue: 5)
- 
-sample.someLazyProperty
-sample.someComputedProperty
-sample.update(value: 20)
-sample.someLazyProperty
-sample.someComputedProperty
-
-
-
+*/
